@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import {
   User,
   Mail,
@@ -30,15 +30,19 @@ export default function Register() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -49,7 +53,22 @@ export default function Register() {
     setSubmitted(true);
     setLoading(false);
 
-    // Reset after 5 seconds
+    // Reset form after submission
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      numberOfGuests: "1",
+      hearAbout: "",
+      prayerRequest: "",
+      agreeToTerms: false,
+    });
+
+    // Hide success message after 5 seconds
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -301,7 +320,6 @@ export default function Register() {
                     name="prayerRequest"
                     value={formData.prayerRequest}
                     onChange={handleChange}
-                    rows="4"
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
                     placeholder="Share any prayer requests you'd like us to pray about..."
                   ></textarea>
