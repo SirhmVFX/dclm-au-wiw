@@ -16,7 +16,7 @@ export default function About() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center">
+      <section className="relative lg:h-[70vh] h-[50vh] flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black z-10"></div>
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -36,10 +36,10 @@ export default function About() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-20">
+      <section className="lg:py-20 py-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-20 border border-white/10">
+            <div className="bg-white/5 backdrop-blur-lg rounded-2xl lg:p-20  p-10 border border-white/10">
               <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-6">
                 <Target className="w-8 h-8 text-white" />
               </div>
@@ -50,7 +50,7 @@ export default function About() {
                 warfare to overcome every battle of life.
               </p>
             </div>
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-20 border border-white/10">
+            <div className="bg-white/5 backdrop-blur-lg rounded-2xl lg:p-20 p-10 border border-white/10">
               <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-6">
                 <Heart className="w-8 h-8 text-white" />
               </div>
@@ -68,7 +68,7 @@ export default function About() {
       </section>
 
       {/* What to Expect */}
-      <section className="py-[250px] bg-white">
+      <section className="lg:py-[250px] py-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 ">
@@ -78,69 +78,71 @@ export default function About() {
               A transformative experience like no other
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Cross className="w-12 h-12 text-gray-900" />
+          <div className="grid grid-cols-1 md:grid-cols-3 grid-cols-2 gap-8">
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Cross className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
                 Prophetic Ministry
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 md:text-base text-sm">
                 Receive prophetic direction and insight for your life and
                 destiny
               </p>
             </div>
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Shield className="w-12 h-12 text-gray-900" />
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Shield className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
                 Deliverance Sessions
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 md:text-base text-sm">
                 Break free from every form of bondage and oppression
               </p>
             </div>
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <BookOpen className="w-12 h-12 text-gray-900" />
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <BookOpen className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
                 In-depth Word Teaching
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 md:text-base text-sm">
                 Deep biblical insights on spiritual warfare and victory
               </p>
             </div>
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Flame className="w-12 h-12 text-gray-900" />
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Flame className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
                 Intense Prayer & Warfare
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 md:text-base text-sm">
                 Engage in strategic prayer sessions for breakthrough
               </p>
             </div>
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-12 h-12 text-gray-900" />
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Users className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">Felip</h3>
-              <p className="text-gray-400">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
+                Felip
+              </h3>
+              <p className="text-gray-400 md:text-base text-sm">
                 Connect with like-minded believers and prayer warriors
               </p>
             </div>
-            <div className="text-center group border border-black/10 rounded-lg p-10">
-              <div className="w-24 h-24 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Crown className="w-12 h-12 text-gray-900" />
+            <div className="text-center group border border-black/10 rounded-lg lg:p-10 p-4">
+              <div className="lg:w-24 lg:h-24 w-10 h-10 border border-black/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Crown className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">
+              <h3 className="lg:text-xl text-md font-bold text-black mb-3">
                 Supernatural Victory
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 md:text-base text-sm">
                 Experience breakthrough and lasting transformation
               </p>
             </div>

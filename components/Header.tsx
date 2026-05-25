@@ -107,7 +107,7 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-white focus:outline-none z-99"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -115,7 +115,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden fixed inset-0 bg-white z-40 transition-transform duration-500 pt-24 ${
+          className={`md:hidden fixed inset-0 bg-black z-40 transition-transform duration-500 pt-24 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >

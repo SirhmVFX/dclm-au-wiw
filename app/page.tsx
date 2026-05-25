@@ -90,7 +90,7 @@ export default function Home() {
       </section>
 
       {/* Conference Details Section */}
-      <section className="py-[200px] ">
+      <section className="lg:py-[200px] py-8 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-2 text-white">
@@ -140,7 +140,7 @@ export default function Home() {
       </section>
 
       {/* Minister Section */}
-      <section className="py-[250px] bg-white">
+      <section className="lg:py-[250px] py-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/3 lg:h-[600px]">
@@ -162,7 +162,7 @@ export default function Home() {
                 Pastor William F. Kumuyi
               </h2>
               <p className="text-2xl text-orange-400 mb-6">WALK IN VICTORY!</p>
-              <p className="text-gray-700 text-lg leading-relaxed mb-8 w-1/2">
+              <p className="text-gray-700 text-lg leading-relaxed mb-8 lg:w-1/2">
                 Join us for a time of deep prophetic insight, deliverance, and
                 spiritual empowerment as God's servant brings forth divine
                 strategies for supernatural victory.
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Theme Section */}
-      <section className="py-[200px] ">
+      <section className="lg:py-[200px] py-10 ">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <Flame className="w-16 h-16 text-white/40 mx-auto mb-6" />
@@ -218,7 +218,7 @@ export default function Home() {
             </div>
           </div>
           <div className="container mx-auto px-4 text-center py-20">
-            <div className="bg-white/5 rounded-3xl p-26 backdrop-blur-lg border border-white/10">
+            <div className="bg-white/5 rounded-3xl p-10 lg:p-26 backdrop-blur-lg border border-white/10">
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Don't Miss This Life-Changing Event!
               </h3>

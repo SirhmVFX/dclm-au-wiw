@@ -200,7 +200,7 @@ export default function Program() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center">
+      <section className="relative lg:h-[70vh] h-[50vh] flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black z-10"></div>
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -223,7 +223,7 @@ export default function Program() {
       {scheduleDays.map((day, idx) => (
         <section
           key={idx}
-          className={`py-[200px] ${idx % 2 === 0 ? "bg-black" : "bg-gray-900/30"}`}
+          className={`md:py-[200px] py-10 ${idx % 2 === 0 ? "bg-black" : "bg-gray-900/30"}`}
         >
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
@@ -259,10 +259,12 @@ export default function Program() {
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-white mb-2">
+                        <h3 className="md:text-xl text-base font-bold text-white mb-2">
                           {session.title}
                         </h3>
-                        <p className="text-gray-400">{session.description}</p>
+                        <p className=" md:text-base text-sm text-gray-400">
+                          {session.description}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -274,7 +276,7 @@ export default function Program() {
       ))}
 
       {/* Special Features */}
-      <section className="py-[200px] bg-white">
+      <section className="md:py-[200px] py-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-black">
@@ -285,16 +287,16 @@ export default function Program() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specialFeatures.map((feature, idx) => (
               <div
                 key={idx}
                 className="bg-black/2 rounded-xl p-6 text-center border border-black/10 hover:scale-105 transition-transform duration-300"
               >
-                <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Star className="w-8 h-8 text-gray-900" />
+                <div className="md:w-16 md:h-16 w-8 h-8 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="md:w-8 md:h-8 h-4 w-4 text-gray-900" />
                 </div>
-                <h3 className="text-xl font-bold text-black mb-2">
+                <h3 className="md:text-xl text-base font-bold text-black mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-orange-600 text-sm mb-2">{feature.time}</p>
