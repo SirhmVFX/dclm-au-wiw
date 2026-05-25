@@ -227,9 +227,9 @@ export default function Program() {
         >
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full px-6 py-2 mb-4">
-                <Calendar className="w-5 h-5 text-yellow-400" />
-                <span className="text-yellow-400 font-semibold">{day.day}</span>
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-400/20 to-orange-500/20 rounded-full px-6 py-2 mb-4">
+                <Calendar className="w-5 h-5 text-orange-400" />
+                <span className="text-orange-400 font-semibold">{day.day}</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-white">
                 {day.date}
@@ -242,7 +242,7 @@ export default function Program() {
                 return (
                   <div
                     key={sIdx}
-                    className="group bg-white/5 backdrop-blur-lg rounded-xl p-6 hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-yellow-400/50"
+                    className="group bg-white/5 backdrop-blur-lg rounded-xl p-6 hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-orange-400/50"
                   >
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                       <div className="flex items-center space-x-4 md:w-48">
@@ -251,8 +251,8 @@ export default function Program() {
                         </div>
                         <div>
                           <div className="flex items-center space-x-2">
-                            <Clock className="w-4 h-4 text-yellow-400" />
-                            <span className="text-yellow-400 font-bold">
+                            <Clock className="w-4 h-4 text-orange-400" />
+                            <span className="text-orange-400 font-bold">
                               {session.time}
                             </span>
                           </div>
@@ -310,40 +310,40 @@ export default function Program() {
         <div className="container mx-auto px-4">
           <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 max-w-3xl mx-auto border border-white/10">
             <div className="flex items-center space-x-3 mb-6">
-              <Flame className="w-8 h-8 text-yellow-400" />
+              <Flame className="w-8 h-8 text-orange-400" />
               <h3 className="text-2xl font-bold text-white">
                 Important Information
               </h3>
             </div>
             <ul className="space-y-3 text-gray-300">
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>
                   Arrive at least 30 minutes before each session for seating
                 </span>
               </li>
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>
                   Come with a notebook and Bible for maximum engagement
                 </span>
               </li>
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>
                   Bring a handkerchief for anointing (for the Saturday session)
                 </span>
               </li>
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>Children's church available during morning sessions</span>
               </li>
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>Free parking available at the venue</span>
               </li>
               <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>Light refreshments will be served during breaks</span>
               </li>
             </ul>
