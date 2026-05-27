@@ -10,6 +10,9 @@ import {
   Users,
   Send,
   CheckCircle,
+  XCircle,
+  AlertCircle,
+  X,
 } from "lucide-react";
 
 export default function Register() {
@@ -29,6 +32,11 @@ export default function Register() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+    show: boolean;
+  }>({ type: "success", message: "", show: false });
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -45,36 +53,119 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setAlert({ type: "success", message: "", show: false });
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setLoading(false);
+      const content = await response.json();
 
-    // Reset form after submission
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      numberOfGuests: "1",
-      hearAbout: "",
-      prayerRequest: "",
-      agreeToTerms: false,
-    });
+      if (response.ok) {
+        // Success
+        console.log(content.data.tableRange);
+        setAlert({
+          type: "success",
+          message:
+            "Registration successful! Your data has been saved to Google Sheets.",
+          show: true,
+        });
+        setSubmitted(true);
 
-    // Hide success message after 5 seconds
-    setTimeout(() => setSubmitted(false), 5000);
+        // Reset form after successful submission
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          address: "",
+          city: "",
+          state: "",
+          zipCode: "",
+          numberOfGuests: "1",
+          hearAbout: "",
+          prayerRequest: "",
+          agreeToTerms: false,
+        });
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          setAlert((prev) => ({ ...prev, show: false }));
+        }, 5000);
+      } else {
+        // Server returned error
+        throw new Error(content.message || "Failed to save registration");
+      }
+    } catch (error: any) {
+      // Error occurred
+      console.error("Registration error:", error);
+      setAlert({
+        type: "error",
+        message:
+          error.message ||
+          "Failed to save registration. Please try again or contact support.",
+        show: true,
+      });
+      setLoading(false);
+
+      // Auto-hide error alert after 6 seconds
+      setTimeout(() => {
+        setAlert((prev) => ({ ...prev, show: false }));
+      }, 6000);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (submitted) {
+  // Alert Component
+  const Alert = () => {
+    if (!alert.show) return null;
+
+    const bgColor =
+      alert.type === "success"
+        ? "bg-green-500/20 border-green-500"
+        : "bg-red-500/20 border-red-500";
+    const textColor =
+      alert.type === "success" ? "text-green-400" : "text-red-400";
+    const Icon = alert.type === "success" ? CheckCircle : XCircle;
+
+    return (
+      <div
+        className={`fixed top-4 right-4 z-50 max-w-md animate-in slide-in-from-right duration-300`}
+      >
+        <div
+          className={`${bgColor} backdrop-blur-lg border rounded-lg shadow-xl p-4`}
+        >
+          <div className="flex items-start gap-3">
+            <Icon className={`${textColor} w-5 h-5 mt-0.5 flex-shrink-0`} />
+            <div className="flex-1">
+              <p className={`${textColor} font-medium text-sm`}>
+                {alert.type === "success" ? "Success!" : "Error!"}
+              </p>
+              <p className="text-white text-sm mt-1">{alert.message}</p>
+            </div>
+            <button
+              onClick={() => setAlert((prev) => ({ ...prev, show: false }))}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  if (submitted && !alert.show) {
     return (
       <>
+        <Alert />
         <div className="min-h-[80vh] flex items-center justify-center">
           <div className="text-center bg-white/5 backdrop-blur-lg rounded-2xl p-12 max-w-md">
             <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
@@ -99,6 +190,8 @@ export default function Register() {
 
   return (
     <>
+      <Alert />
+
       {/* Hero Section */}
       <section className="relative h-[40vh] flex items-center justify-center">
         <div className="absolute inset-0 bg-black/70 z-10"></div>
