@@ -53,6 +53,7 @@ const Header = () => {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Program", href: "/program" },
+    { name: "Direction", href: "/direction" },
   ];
 
   return (
@@ -70,15 +71,15 @@ const Header = () => {
                 <Image
                   src="/assets/dlclogo.png"
                   alt=""
-                  width={70}
-                  height={70}
+                  width={100}
+                  height={100}
                 />
               </div>
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-white">
-                  WINNING IN
+                <h1 className="text-xl md:text-2xl font-bold text-white leading-none">
+                  Deeper Life <br /> Bible Church
                 </h1>
-                <p className="text-xs text-gray-300 -mt-1">WARFARES</p>
+                <p className="text-base text-gray-300 -mt-1">Australia</p>
               </div>
             </div>
           </Link>
