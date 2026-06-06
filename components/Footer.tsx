@@ -59,6 +59,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/verify" className="text-gray-400 hover:text-yellow-400 transition-colors">
+                  Visa Verification (Govt)
+                </Link>
+              </li>
+              <li>
                 <Link
                   href="/register"
                   className="text-gray-400 hover:text-white transition-colors"

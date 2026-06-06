@@ -6,12 +6,10 @@ import {
   Mail,
   Phone,
   MapPin,
-  Calendar,
   Users,
   Send,
   CheckCircle,
   XCircle,
-  AlertCircle,
   X,
 } from "lucide-react";
 
@@ -27,11 +25,21 @@ export default function Register() {
     numberOfGuests: "1",
     hearAbout: "",
     prayerRequest: "",
+    passportNumber: "",
+    country: "",
+    dateOfBirth: "",
+    expectedArrivalDate: "",
     agreeToTerms: false,
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [registrationData, setRegistrationData] = useState<{
+    ticketNumber: string;
+    registrationId: string;
+    fullName: string;
+    email: string;
+  } | null>(null);
   const [alert, setAlert] = useState<{
     type: "success" | "error";
     message: string;
@@ -50,9 +58,26 @@ export default function Register() {
     }));
   };
 
+  const generateTicketNumber = () => {
+    return `DCLM-${Date.now()}-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    const ticketNumber = generateTicketNumber();
+    const registrationId = ticketNumber;
+
+    // Create complete registration data with ticket info
+    const completeFormData = {
+      ...formData,
+      ticketNumber: ticketNumber,
+      registrationId: registrationId,
+      registrationDate: new Date().toISOString().split('T')[0],
+      registrationTimestamp: new Date().toISOString(),
+    };
+
     setAlert({ type: "success", message: "", show: false });
 
     try {
@@ -62,20 +87,32 @@ export default function Register() {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(completeFormData),
       });
 
       const content = await response.json();
 
       if (response.ok) {
-        // Success
-        console.log(content.data.tableRange);
+        // Store registration data in localStorage for ticket access
+        localStorage.setItem(`registration_${registrationId}`, JSON.stringify(completeFormData));
+        localStorage.setItem(`registration_email_${formData.email}`, JSON.stringify(completeFormData));
+
+        console.log("Registration saved:", content.data?.tableRange || "Success");
+
+        // Store registration info for success screen
+        setRegistrationData({
+          ticketNumber: ticketNumber,
+          registrationId: registrationId,
+          fullName: formData.fullName,
+          email: formData.email,
+        });
+
         setAlert({
           type: "success",
-          message:
-            "Registration successful! Your data has been saved to Google Sheets.",
+          message: `Registration successful! Your ticket number is ${ticketNumber}.`,
           show: true,
         });
+
         setSubmitted(true);
 
         // Reset form after successful submission
@@ -90,31 +127,28 @@ export default function Register() {
           numberOfGuests: "1",
           hearAbout: "",
           prayerRequest: "",
+          passportNumber: "",
+          country: "",
+          dateOfBirth: "",
+          expectedArrivalDate: "",
           agreeToTerms: false,
         });
 
-        // Hide success message after 5 seconds
+        // Auto-hide alert after 5 seconds
         setTimeout(() => {
-          setSubmitted(false);
           setAlert((prev) => ({ ...prev, show: false }));
         }, 5000);
       } else {
-        // Server returned error
         throw new Error(content.message || "Failed to save registration");
       }
     } catch (error: any) {
-      // Error occurred
       console.error("Registration error:", error);
       setAlert({
         type: "error",
-        message:
-          error.message ||
-          "Failed to save registration. Please try again or contact support.",
+        message: error.message || "Failed to save registration. Please try again or contact support.",
         show: true,
       });
-      setLoading(false);
 
-      // Auto-hide error alert after 6 seconds
       setTimeout(() => {
         setAlert((prev) => ({ ...prev, show: false }));
       }, 6000);
@@ -124,7 +158,7 @@ export default function Register() {
   };
 
   // Alert Component
-  const Alert = () => {
+  const AlertMessage = () => {
     if (!alert.show) return null;
 
     const bgColor =
@@ -136,12 +170,8 @@ export default function Register() {
     const Icon = alert.type === "success" ? CheckCircle : XCircle;
 
     return (
-      <div
-        className={`fixed top-4 right-4 z-50 max-w-md animate-in slide-in-from-right duration-300`}
-      >
-        <div
-          className={`${bgColor} backdrop-blur-lg border rounded-lg shadow-xl p-4`}
-        >
+      <div className="fixed top-20 right-4 z-50 max-w-md animate-in slide-in-from-right duration-300">
+        <div className={`${bgColor} backdrop-blur-lg border rounded-lg shadow-xl p-4`}>
           <div className="flex items-start gap-3">
             <Icon className={`${textColor} w-5 h-5 mt-0.5 flex-shrink-0`} />
             <div className="flex-1">
@@ -162,26 +192,42 @@ export default function Register() {
     );
   };
 
-  if (submitted && !alert.show) {
+  // Success Screen
+  if (submitted && registrationData) {
     return (
       <>
-        <Alert />
+        <AlertMessage />
         <div className="min-h-[80vh] flex items-center justify-center">
           <div className="text-center bg-white/5 backdrop-blur-lg rounded-2xl p-12 max-w-md">
             <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Registration Successful!
-            </h2>
-            <p className="text-gray-300 mb-6">
-              Thank you for registering for Winning in Warfares Conference.
-              We'll send you a confirmation email shortly.
+            <h2 className="text-3xl font-bold text-white mb-4">Registration Successful!</h2>
+            <div className="bg-yellow-400/10 rounded-lg p-4 mb-6">
+              <p className="text-yellow-400 font-mono text-lg">{registrationData.ticketNumber}</p>
+              <p className="text-gray-400 text-sm mt-1">Your Ticket Number</p>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Thank you {registrationData.fullName} for registering for Winning in Warfares Conference.
             </p>
-            <button
-              onClick={() => setSubmitted(false)}
-              className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 font-bold rounded-full"
-            >
-              Register Another Person
-            </button>
+            <p className="text-gray-400 text-sm mb-6">
+              A confirmation has been sent to {registrationData.email}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => window.location.href = `/confirmation/${registrationData.registrationId}`}
+                className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 font-bold rounded-full"
+              >
+                View My Ticket
+              </button>
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  setRegistrationData(null);
+                }}
+                className="px-6 py-3 border border-yellow-400 text-yellow-400 font-bold rounded-full hover:bg-yellow-400/10"
+              >
+                Register Another Person
+              </button>
+            </div>
           </div>
         </div>
       </>
@@ -190,7 +236,7 @@ export default function Register() {
 
   return (
     <>
-      <Alert />
+      <AlertMessage />
 
       {/* Hero Section */}
       <section className="relative h-[40vh] flex items-center justify-center">
@@ -413,9 +459,73 @@ export default function Register() {
                     name="prayerRequest"
                     value={formData.prayerRequest}
                     onChange={handleChange}
+                    rows={4}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
                     placeholder="Share any prayer requests you'd like us to pray about..."
-                  ></textarea>
+                  />
+                </div>
+
+                {/* Passport Number - CRITICAL FOR VISA */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">Passport Number *</label>
+                  <input
+                    type="text"
+                    name="passportNumber"
+                    value={formData.passportNumber}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
+                    placeholder="Enter your passport number"
+                  />
+                </div>
+
+                {/* Country of Origin */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">Country of Origin *</label>
+                  <select
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  >
+                    <option value="">Select your country</option>
+                    <option value="USA">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="Canada">Canada</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="India">India</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                {/* Date of Birth */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">Date of Birth *</label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  />
+                </div>
+
+                {/* Expected Arrival Date */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">Expected Arrival Date in Australia *</label>
+                  <input
+                    type="date"
+                    name="expectedArrivalDate"
+                    value={formData.expectedArrivalDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  />
                 </div>
 
                 {/* Terms */}
