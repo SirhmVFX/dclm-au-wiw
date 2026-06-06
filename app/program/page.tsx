@@ -360,12 +360,7 @@ export default function Program() {
                   Come with a notebook and Bible for maximum engagement
                 </span>
               </li>
-              <li className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                <span>
-                  Bring a handkerchief for anointing (for the Saturday session)
-                </span>
-              </li>
+
               <li className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span>Children's church available during morning sessions</span>

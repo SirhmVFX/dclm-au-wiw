@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
       },
       scopes: [
-        "https://www.googleapis.com/auth/spreadsheets", // You only need this for sheets
+        "https://www.googleapis.com/auth/spreadsheets",
       ],
     });
 
@@ -45,24 +45,40 @@ export async function POST(request: NextRequest) {
       version: "v4",
     });
 
+    // Generate ticket number
+    const ticketNumber = body.ticketNumber || `DCLM-${Date.now()}-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+    const registrationId = ticketNumber;
+    const registrationDate = new Date().toISOString().split('T')[0];
+    const registrationTimestamp = new Date().toISOString();
+
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "A1:K1",
+      range: "A1:U1", // Expanded range to accommodate all new fields (A to U = 21 columns)
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [
           [
-            body.fullName,
-            body.email,
-            body.phone,
-            body.address || "",
-            body.city || "",
-            body.state || "",
-            body.zipCode || "",
-            body.numberOfGuests,
-            body.hearAbout || "",
-            body.prayerRequest || "",
-            body.agreeToTerms ? "Yes" : "No",
+            ticketNumber,                          // A: Ticket Number
+            registrationId,                        // B: Registration ID
+            body.fullName,                         // C: Full Name
+            body.email,                            // D: Email
+            body.phone,                            // E: Phone
+            body.address || "",                    // F: Address
+            body.city || "",                       // G: City
+            body.state || "",                      // H: State
+            body.zipCode || "",                    // I: Zip Code
+            body.numberOfGuests,                   // J: Number of Guests
+            body.hearAbout || "",                  // K: How Did You Hear
+            body.prayerRequest || "",              // L: Prayer Request
+            body.passportNumber || "",             // M: Passport Number
+            body.country || "",                    // N: Country of Origin
+            body.dateOfBirth || "",                // O: Date of Birth
+            body.expectedArrivalDate || "",        // P: Expected Arrival Date
+            registrationDate,                      // Q: Registration Date
+            registrationTimestamp,                 // R: Registration Timestamp
+            body.agreeToTerms ? "Yes" : "No",      // S: Agreed to Terms
+            "Pending",                             // T: Check-in Status
+            "Confirmed"                            // U: Registration Status
           ],
         ],
       },
@@ -70,10 +86,18 @@ export async function POST(request: NextRequest) {
 
     console.log("Google Sheets response:", response.data);
 
+    // Return the ticket information for confirmation
     return NextResponse.json({
       success: true,
       message: "Registration saved successfully",
-      data: response.data,
+      data: {
+        ...response.data,
+        ticketNumber: ticketNumber,
+        registrationId: registrationId,
+        registrationDate: registrationDate,
+        fullName: body.fullName,
+        email: body.email,
+      },
     });
   } catch (error: any) {
     console.error("Google Sheets API Error:", error);
