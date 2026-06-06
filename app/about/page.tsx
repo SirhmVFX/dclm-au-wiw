@@ -129,7 +129,7 @@ export default function About() {
                 <Users className="lg:w-12 lg:h-12 w-6 h-6 text-gray-900" />
               </div>
               <h3 className="lg:text-xl text-md font-bold text-black mb-3">
-                Felip
+                Felllowship
               </h3>
               <p className="text-gray-400 md:text-base text-sm">
                 Connect with like-minded believers and prayer warriors
