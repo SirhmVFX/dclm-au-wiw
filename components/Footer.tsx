@@ -9,6 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* About Section */}
           <div>
+            <p className="text-sm text-gray-400">Organizer</p>
             <div className="flex items-center space-x-2 mb-4">
               <div>
                 <Image
@@ -19,9 +20,10 @@ const Footer = () => {
                 />
               </div>
               <h3 className="text-xl font-bold text-white">
-                WINNING IN WARFARES
+                Deeper Life <br />Bible Church <br /> <span className="text-sm text-gray-300">Australia</span>
               </h3>
             </div>
+            <p>ABN: 13 781 729 172 </p>
             <p className="text-gray-400 text-sm leading-relaxed">
               A prophetic and deliverance conference designed to equip believers
               with divine weapons for supernatural victory.
@@ -106,7 +108,7 @@ const Footer = () => {
             </h4>
             <div className="flex space-x-4 mb-6">
               <a
-                href="#"
+                href="https://www.facebook.com/dclm.australia"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300"
               >
                 <svg
@@ -123,7 +125,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.x.com/dclmau"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300"
               >
                 <svg
@@ -136,7 +138,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/dclmaustralia"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300"
               >
                 <svg
@@ -153,7 +155,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.youtube.com/dclmaustralia"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300"
               >
                 <svg
