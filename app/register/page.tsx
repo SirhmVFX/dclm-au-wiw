@@ -25,9 +25,8 @@ export default function Register() {
     numberOfGuests: "1",
     hearAbout: "",
     prayerRequest: "",
-    passportNumber: "",
+    visitingGuests: "",
     country: "",
-    dateOfBirth: "",
     expectedArrivalDate: "",
     agreeToTerms: false,
   });
@@ -127,9 +126,8 @@ export default function Register() {
           numberOfGuests: "1",
           hearAbout: "",
           prayerRequest: "",
-          passportNumber: "",
+          visitingGuests: "",
           country: "",
-          dateOfBirth: "",
           expectedArrivalDate: "",
           agreeToTerms: false,
         });
@@ -465,17 +463,17 @@ export default function Register() {
                   />
                 </div>
 
-                {/* Passport Number - CRITICAL FOR VISA */}
-                <div>
-                  <label className="block text-gray-300 mb-2 font-semibold">Passport Number *</label>
+                {/* Name of Other Visiting Guests */}
+                <div className="md:col-span-2">
+                  <label className="block text-gray-300 mb-2  font-semibold">Name of Other Guests (Seperate names with ,) *</label>
                   <input
                     type="text"
-                    name="passportNumber"
-                    value={formData.passportNumber}
+                    name="visitingGuests"
+                    value={formData.visitingGuests}
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
-                    placeholder="Enter your passport number"
+                    placeholder="Enter your other guests names"
                   />
                 </div>
 
@@ -502,18 +500,7 @@ export default function Register() {
                   </select>
                 </div>
 
-                {/* Date of Birth */}
-                <div>
-                  <label className="block text-gray-300 mb-2 font-semibold">Date of Birth *</label>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
-                  />
-                </div>
+
 
                 {/* Expected Arrival Date */}
                 <div>

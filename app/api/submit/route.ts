@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "A1:U1", // Expanded range to accommodate all new fields (A to U = 21 columns)
+      range: "A1:T1", // Expanded range to accommodate all new fields (A to U = 21 columns)
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [
@@ -70,9 +70,8 @@ export async function POST(request: NextRequest) {
             body.numberOfGuests,                   // J: Number of Guests
             body.hearAbout || "",                  // K: How Did You Hear
             body.prayerRequest || "",              // L: Prayer Request
-            body.passportNumber || "",             // M: Passport Number
+            body.visitingGuests || "",             // M: Passport Number
             body.country || "",                    // N: Country of Origin
-            body.dateOfBirth || "",                // O: Date of Birth
             body.expectedArrivalDate || "",        // P: Expected Arrival Date
             registrationDate,                      // Q: Registration Date
             registrationTimestamp,                 // R: Registration Timestamp
