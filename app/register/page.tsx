@@ -18,6 +18,8 @@ export default function Register() {
     fullName: "",
     email: "",
     phone: "",
+    gender: "",
+    ageGrade: "",
     address: "",
     city: "",
     state: "",
@@ -25,8 +27,8 @@ export default function Register() {
     numberOfGuests: "1",
     hearAbout: "",
     prayerRequest: "",
-    visitingGuests: "",
-    country: "",
+    placeOfOrigin: "",
+    overseasCountry: "",
     expectedArrivalDate: "",
     agreeToTerms: false,
   });
@@ -58,7 +60,7 @@ export default function Register() {
   };
 
   const generateTicketNumber = () => {
-    return `DCLM-${Date.now()}-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+    return `DCLM-${Date.now()}-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -68,12 +70,18 @@ export default function Register() {
     const ticketNumber = generateTicketNumber();
     const registrationId = ticketNumber;
 
-    // Create complete registration data with ticket info
+    // Resolve the final place of origin value
+    const resolvedOrigin =
+      formData.placeOfOrigin === "Overseas"
+        ? `Overseas - ${formData.overseasCountry}`
+        : formData.placeOfOrigin;
+
     const completeFormData = {
       ...formData,
-      ticketNumber: ticketNumber,
-      registrationId: registrationId,
-      registrationDate: new Date().toISOString().split('T')[0],
+      placeOfOrigin: resolvedOrigin,
+      ticketNumber,
+      registrationId,
+      registrationDate: new Date().toISOString().split("T")[0],
       registrationTimestamp: new Date().toISOString(),
     };
 
@@ -92,16 +100,20 @@ export default function Register() {
       const content = await response.json();
 
       if (response.ok) {
-        // Store registration data in localStorage for ticket access
-        localStorage.setItem(`registration_${registrationId}`, JSON.stringify(completeFormData));
-        localStorage.setItem(`registration_email_${formData.email}`, JSON.stringify(completeFormData));
+        localStorage.setItem(
+          `registration_${registrationId}`,
+          JSON.stringify(completeFormData),
+        );
+        localStorage.setItem(
+          `registration_email_${formData.email}`,
+          JSON.stringify(completeFormData),
+        );
 
         console.log("Registration saved:", content.data?.tableRange || "Success");
 
-        // Store registration info for success screen
         setRegistrationData({
-          ticketNumber: ticketNumber,
-          registrationId: registrationId,
+          ticketNumber,
+          registrationId,
           fullName: formData.fullName,
           email: formData.email,
         });
@@ -114,11 +126,12 @@ export default function Register() {
 
         setSubmitted(true);
 
-        // Reset form after successful submission
         setFormData({
           fullName: "",
           email: "",
           phone: "",
+          gender: "",
+          ageGrade: "",
           address: "",
           city: "",
           state: "",
@@ -126,26 +139,25 @@ export default function Register() {
           numberOfGuests: "1",
           hearAbout: "",
           prayerRequest: "",
-          visitingGuests: "",
-          country: "",
+          placeOfOrigin: "",
+          overseasCountry: "",
           expectedArrivalDate: "",
           agreeToTerms: false,
         });
 
-        // Auto-hide alert after 5 seconds
         setTimeout(() => {
           setAlert((prev) => ({ ...prev, show: false }));
         }, 5000);
       } else {
         throw new Error(content.message || "Failed to save registration");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to save registration. Please try again or contact support.";
       console.error("Registration error:", error);
-      setAlert({
-        type: "error",
-        message: error.message || "Failed to save registration. Please try again or contact support.",
-        show: true,
-      });
+      setAlert({ type: "error", message, show: true });
 
       setTimeout(() => {
         setAlert((prev) => ({ ...prev, show: false }));
@@ -211,7 +223,9 @@ export default function Register() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => window.location.href = `/confirmation/${registrationData.registrationId}`}
+                onClick={() =>
+                  (window.location.href = `/confirmation/${registrationData.registrationId}`)
+                }
                 className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 font-bold rounded-full"
               >
                 View My Ticket
@@ -301,6 +315,43 @@ export default function Register() {
                       placeholder="Enter your full name"
                     />
                   </div>
+                </div>
+
+                {/* Gender */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">
+                    Gender *
+                  </label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+
+                {/* Age Grade */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">
+                    Age Grade *
+                  </label>
+                  <select
+                    name="ageGrade"
+                    value={formData.ageGrade}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  >
+                    <option value="">Select age grade</option>
+                    <option value="Child">Child</option>
+                    <option value="Youth Adult">Youth Adult</option>
+                    <option value="Adult">Adult</option>
+                  </select>
                 </div>
 
                 {/* Email */}
@@ -427,6 +478,57 @@ export default function Register() {
                   </div>
                 </div>
 
+                {/* Place of Origin */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">
+                    Place of Origin *
+                  </label>
+                  <select
+                    name="placeOfOrigin"
+                    value={formData.placeOfOrigin}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  >
+                    <option value="">Select place of origin</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Overseas">Overseas</option>
+                  </select>
+                </div>
+
+                {/* Overseas Country — shown only when Overseas is selected */}
+                {formData.placeOfOrigin === "Overseas" && (
+                  <div>
+                    <label className="block text-gray-300 mb-2 font-semibold">
+                      Country (Overseas) *
+                    </label>
+                    <input
+                      type="text"
+                      name="overseasCountry"
+                      value={formData.overseasCountry}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
+                      placeholder="Enter your country"
+                    />
+                  </div>
+                )}
+
+                {/* Expected Arrival Date */}
+                <div>
+                  <label className="block text-gray-300 mb-2 font-semibold">
+                    Expected Arrival Date in Australia *
+                  </label>
+                  <input
+                    type="date"
+                    name="expectedArrivalDate"
+                    value={formData.expectedArrivalDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                  />
+                </div>
+
                 {/* How did you hear */}
                 <div className="md:col-span-2">
                   <label className="block text-gray-300 mb-2 font-semibold">
@@ -460,58 +562,6 @@ export default function Register() {
                     rows={4}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
                     placeholder="Share any prayer requests you'd like us to pray about..."
-                  />
-                </div>
-
-                {/* Name of Other Visiting Guests */}
-                <div className="md:col-span-2">
-                  <label className="block text-gray-300 mb-2  font-semibold">Name of Other Guests (Seperate names with ,) *</label>
-                  <input
-                    type="text"
-                    name="visitingGuests"
-                    value={formData.visitingGuests}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
-                    placeholder="Enter your other guests names"
-                  />
-                </div>
-
-                {/* Country of Origin */}
-                <div>
-                  <label className="block text-gray-300 mb-2 font-semibold">Country of Origin *</label>
-                  <select
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
-                  >
-                    <option value="">Select your country</option>
-                    <option value="USA">United States</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="Canada">Canada</option>
-                    <option value="South Africa">South Africa</option>
-                    <option value="Nigeria">Nigeria</option>
-                    <option value="Kenya">Kenya</option>
-                    <option value="Ghana">Ghana</option>
-                    <option value="India">India</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-
-
-                {/* Expected Arrival Date */}
-                <div>
-                  <label className="block text-gray-300 mb-2 font-semibold">Expected Arrival Date in Australia *</label>
-                  <input
-                    type="date"
-                    name="expectedArrivalDate"
-                    value={formData.expectedArrivalDate}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400 transition-colors"
                   />
                 </div>
 

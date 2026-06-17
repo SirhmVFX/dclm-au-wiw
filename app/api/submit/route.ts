@@ -3,14 +3,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
 
 export async function POST(request: NextRequest) {
-  console.log("API route hit!"); // Debug log
+  console.log("API route hit!");
 
   try {
     const body = await request.json();
-    console.log("Received body:", body); // Debug log
+    console.log("Received body:", body);
 
     // Validate required fields
-    if (!body.fullName || !body.email || !body.phone || !body.numberOfGuests) {
+    if (
+      !body.fullName ||
+      !body.email ||
+      !body.phone ||
+      !body.numberOfGuests ||
+      !body.gender ||
+      !body.ageGrade ||
+      !body.placeOfOrigin
+    ) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 },
@@ -35,25 +43,22 @@ export async function POST(request: NextRequest) {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
         private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
       },
-      scopes: [
-        "https://www.googleapis.com/auth/spreadsheets",
-      ],
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
-    const sheets = google.sheets({
-      auth,
-      version: "v4",
-    });
+    const sheets = google.sheets({ auth, version: "v4" });
 
-    // Generate ticket number
-    const ticketNumber = body.ticketNumber || `DCLM-${Date.now()}-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+    const ticketNumber =
+      body.ticketNumber ||
+      `DCLM-${Date.now()}-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
     const registrationId = ticketNumber;
-    const registrationDate = new Date().toISOString().split('T')[0];
+    const registrationDate = new Date().toISOString().split("T")[0];
     const registrationTimestamp = new Date().toISOString();
 
+    // Columns A–T (20 columns)
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "A1:T1", // Expanded range to accommodate all new fields (A to U = 21 columns)
+      range: "A1:T1",
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [
@@ -61,23 +66,23 @@ export async function POST(request: NextRequest) {
             ticketNumber,                          // A: Ticket Number
             registrationId,                        // B: Registration ID
             body.fullName,                         // C: Full Name
-            body.email,                            // D: Email
-            body.phone,                            // E: Phone
-            body.address || "",                    // F: Address
-            body.city || "",                       // G: City
-            body.state || "",                      // H: State
-            body.zipCode || "",                    // I: Zip Code
-            body.numberOfGuests,                   // J: Number of Guests
-            body.hearAbout || "",                  // K: How Did You Hear
-            body.prayerRequest || "",              // L: Prayer Request
-            body.visitingGuests || "",             // M: Passport Number
-            body.country || "",                    // N: Country of Origin
-            body.expectedArrivalDate || "",        // P: Expected Arrival Date
+            body.gender,                           // D: Gender
+            body.ageGrade,                         // E: Age Grade
+            body.email,                            // F: Email
+            body.phone,                            // G: Phone
+            body.address || "",                    // H: Address
+            body.city || "",                       // I: City
+            body.state || "",                      // J: State
+            body.zipCode || "",                    // K: Zip Code
+            body.numberOfGuests,                   // L: Number of Guests
+            body.placeOfOrigin || "",              // M: Place of Origin
+            body.expectedArrivalDate || "",        // N: Expected Arrival Date
+            body.hearAbout || "",                  // O: How Did You Hear
+            body.prayerRequest || "",              // P: Prayer Request
             registrationDate,                      // Q: Registration Date
             registrationTimestamp,                 // R: Registration Timestamp
             body.agreeToTerms ? "Yes" : "No",      // S: Agreed to Terms
-            "Pending",                             // T: Check-in Status
-            "Confirmed"                            // U: Registration Status
+            "Confirmed",                           // T: Registration Status
           ],
         ],
       },
@@ -85,29 +90,26 @@ export async function POST(request: NextRequest) {
 
     console.log("Google Sheets response:", response.data);
 
-    // Return the ticket information for confirmation
     return NextResponse.json({
       success: true,
       message: "Registration saved successfully",
       data: {
         ...response.data,
-        ticketNumber: ticketNumber,
-        registrationId: registrationId,
-        registrationDate: registrationDate,
+        ticketNumber,
+        registrationId,
+        registrationDate,
         fullName: body.fullName,
         email: body.email,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Something went wrong";
     console.error("Google Sheets API Error:", error);
-    return NextResponse.json(
-      { message: error.message || "Something went wrong" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message }, { status: 500 });
   }
 }
 
-// Optional: Handle other HTTP methods
 export async function GET() {
   return NextResponse.json(
     { message: "GET method not allowed. Use POST instead." },
