@@ -349,7 +349,8 @@ export default function Register() {
                   >
                     <option value="">Select age grade</option>
                     <option value="Child">Child</option>
-                    <option value="Youth Adult">Youth Adult</option>
+                    <option value="Youth Adult">Youth </option>
+                    <option value="Youth Adult">Young Adult</option>
                     <option value="Adult">Adult</option>
                   </select>
                 </div>
@@ -456,7 +457,7 @@ export default function Register() {
                 </div>
 
                 {/* Number of Guests */}
-                <div>
+                {/* <div>
                   <label className="block text-gray-300 mb-2 font-semibold">
                     Number of People (Including you) *
                   </label>
@@ -476,7 +477,7 @@ export default function Register() {
                       ))}
                     </select>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Place of Origin */}
                 <div>
